@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
-<project name="SQLDEV_DARK" basedir="." default="jar">
+<project name="ORCL_SQLDEV_THEME" basedir="." default="jar">
 	<!-- ================================================================= -->
 	<!-- P R O P E R T I E S                                               -->
 	<!-- ================================================================= -->
 	<!-- program name -->
-	<property name="name" value="SQLDEV_DARK" />
+	<property name="name" value="ORCL_SQLDEV_THEME" />
 	<!-- project version -->
 	<property name="version" value="0.01.0" />
 	<!-- the jar directory -->
 	<property name="dest.jar" value="${basedir}/build/jar" />
+	<!-- deploy dir -->
+	<property name="deploy.jar" value="C:\Tools\sqldeveloper\ide\themes" />
 	
 	<!-- ================================================================= -->
 	<!-- I N I T                                                           -->
@@ -23,16 +25,34 @@
 		<jar jarfile="${dest.jar}/fusionblue.jar" compress="true" basedir="${basedir}/src">
 			<manifest>
 				<attribute name="Implementation-Vendor" value="rammelhof.at" />
-				<attribute name="Implementation-Title" value="SQL Developer Dark Theme" />
+				<attribute name="Implementation-Title" value="SQL Developer Theme" />
 				<attribute name="Implementation-Version" value="${version}" />
 				<attribute name="Export-Package" value="META-INF" />
 			</manifest>
 		</jar>
-		<copy todir="C:\Tools\sqldeveloper\ide\themes">
+	</target>
+	
+	<target name="fusionBlue.check">
+	    <condition property="fusionBlue.run">
+	        <and>
+	            <available file="${deploy.jar}\fusionblue.jar.orig"/>
+	        </and>
+	    </condition>
+	</target>
+	
+	<target name="fusionBlue.backup" depends="fusionBlue.check" unless="fusionBlue.run">
+		<copy file="${deploy.jar}\fusionblue.jar" tofile="${deploy.jar}\fusionblue.jar.orig">
+		</copy>
+	</target>
+	
+	
+	<target name="deploy" 
+		depends="jar,fusionBlue.backup,fusionBlue.check"
+		if="fusionBlue.run"
+		description="Deploy the .jar file.">
+		<copy todir="${deploy.jar}">
 			<fileset dir="${dest.jar}">
 			</fileset>
 		</copy>
 	</target>
-
-
 </project>
