@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<project name="SQLDEV_DARK" basedir="." default="jar">
+	<!-- ================================================================= -->
+	<!-- P R O P E R T I E S                                               -->
+	<!-- ================================================================= -->
+	<!-- program name -->
+	<property name="name" value="SQLDEV_DARK" />
+	<!-- project version -->
+	<property name="version" value="0.01.0" />
+	<!-- the jar directory -->
+	<property name="dest.jar" value="${basedir}/build/jar" />
+	
+	<!-- ================================================================= -->
+	<!-- I N I T                                                           -->
+	<!-- ================================================================= -->
+	<target name="init.jar">
+		<delete dir="${dest.jar}" />
+	</target>
+
+
+	<target name="jar" depends="init.jar" description="Generate the .jar file.">
+		<mkdir dir="${dest.jar}" />
+		<jar jarfile="${dest.jar}/fusionblue.jar" compress="true" basedir="${basedir}/src">
+			<manifest>
+				<attribute name="Implementation-Vendor" value="rammelhof.at" />
+				<attribute name="Implementation-Title" value="SQL Developer Dark Theme" />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Export-Package" value="META-INF" />
+			</manifest>
+		</jar>
+		<copy todir="C:\Tools\sqldeveloper\ide\themes">
+			<fileset dir="${dest.jar}">
+			</fileset>
+		</copy>
+	</target>
+
+
+</project>
